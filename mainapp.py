@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 import os
 
 from text_model import analyze_text
-from image_model import analyze_image
+from image_model import analyze_image 
 from url_checker import check_url
 
 app = Flask(__name__)

@@ -2,36 +2,123 @@
 <html>
 <head>
     <title>AI Fake News Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        textarea, input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f7f7f7;
+        }
+
+        .fake {
+            color: red;
+            font-weight: bold;
+        }
+
+        .real {
+            color: green;
+            font-weight: bold;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>Fake News Detection System</h1>
+<div class="container">
+    <h1>🧠 AI Fake News Analyzer</h1>
 
-<form method="POST" enctype="multipart/form-data">
-    <textarea name="news" placeholder="Enter news text"></textarea><br><br>
+    <form method="POST" enctype="multipart/form-data">
+        <label class="label">News Text:</label>
+        <textarea name="news" placeholder="Enter news text..."></textarea>
 
-    <input type="text" name="url" placeholder="Enter news URL"><br><br>
+        <label class="label">News URL:</label>
+        <input type="text" name="url" placeholder="Enter URL...">
 
-    <input type="file" name="image"><br><br>
+        <label class="label">Upload Image:</label>
+        <input type="file" name="image">
 
-    <button type="submit">Analyze</button>
-</form>
+        <button type="submit">Analyze</button>
+    </form>
 
-{% if result %}
-    <h2>Results:</h2>
+    {% if result %}
+    <div class="result">
+        <h2>Results:</h2>
 
-    {% if result.text %}
-        <p>Text: {{ result.text.label }} ({{ result.text.confidence }}%)</p>
+        {% if result.text %}
+            <p>
+                Text:
+                <span class="{{ 'fake' if result.text.label == 'FAKE' else 'real' }}">
+                    {{ result.text.label }}
+                </span>
+                ({{ result.text.confidence }}%)
+            </p>
+        {% endif %}
+
+        {% if result.url %}
+            <p>Source: {{ result.url }}</p>
+        {% endif %}
+
+        {% if result.image %}
+            <p>Image: {{ result.image }}</p>
+        {% endif %}
+    </div>
     {% endif %}
-
-    {% if result.url %}
-        <p>Source: {{ result.url }}</p>
-    {% endif %}
-
-    {% if result.image %}
-        <p>Image: {{ result.image }}</p>
-    {% endif %}
-{% endif %}
+</div>
 
 </body>
 </html>
